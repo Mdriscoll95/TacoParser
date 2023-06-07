@@ -15,6 +15,9 @@ namespace LoggingKata
             // TODO:  Find the two Taco Bells that are the furthest from one another.
             // HINT:  You'll need two nested forloops ---------------------------
 
+
+            
+
             logger.LogInfo("Log initialized");
 
             // use File.ReadAllLines(path) to grab all the lines from your csv file
@@ -35,11 +38,41 @@ namespace LoggingKata
 
             // TODO: Create two `ITrackable` variables with initial values of `null`. These will be used to store your two taco bells that are the farthest from each other.
             // Create a `double` variable to store the distance
+            double distance = 0;
+            ITrackable tacoBell1 = null;
+            ITrackable tacoBell2 = null;
 
             // Include the Geolocation toolbox, so you can compare locations: `using GeoCoordinatePortable;`
 
             //HINT NESTED LOOPS SECTION---------------------
             // Do a loop for your locations to grab each location as the origin (perhaps: `locA`)
+            for (int x = 0; x < locations.Length; x++)
+            {
+             
+                var corA = new GeoCoordinate();
+
+                corA.Latitude = locations[x].Location.Latitude;
+                corA.Longitude = locations[x].Location.Longitude;
+
+                for (int y = 1; y < locations.Length; y++)
+                {
+                    var corB = new GeoCoordinate();
+
+
+                    corB.Latitude = locations[y].Location.Latitude;
+                    corB.Longitude = locations[y].Location.Longitude;
+                    double distanceB = corA.GetDistanceTo(corB);
+
+                    if(distanceB > distance)
+                    {
+                        distance = distanceB;
+                        tacoBell1 = locations[x];
+                        tacoBell2 = locations[y];
+
+                    }
+                }
+            }
+                    Console.WriteLine($"{tacoBell1.Name} farther than {tacoBell2.Name} by {Math.Round(distance * 0.00062)}");
 
             // Create a new corA Coordinate with your locA's lat and long
 
@@ -54,6 +87,7 @@ namespace LoggingKata
 
 
             
+        Console.ReadLine();
         }
     }
 }
